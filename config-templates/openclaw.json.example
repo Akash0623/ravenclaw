@@ -1,0 +1,68 @@
+{
+  "gateway": {
+    "bind": "localhost",
+    "port": 18789,
+    "auth": {
+      "mode": "token"
+    }
+  },
+  "models": {
+    "providers": {
+      "anthropic": {
+        "apiKey": "${ANTHROPIC_API_KEY}"
+      },
+      "openrouter": {
+        "apiKey": "${OPENROUTER_API_KEY}"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "claude-sonnet-4-20250514",
+        "fallbacks": ["deepseek/deepseek-chat"]
+      }
+    }
+  },
+  "channels": {
+    "whatsapp": {
+      "enabled": true,
+      "accounts": {
+        "default": {
+          "name": "Ravenclaw WhatsApp"
+        }
+      }
+    },
+    "telegram": {
+      "enabled": true,
+      "accounts": {
+        "default": {
+          "name": "Ravenclaw Telegram"
+        }
+      }
+    },
+    "webchat": {
+      "enabled": true
+    },
+    "discord": { "enabled": false },
+    "slack": { "enabled": false },
+    "signal": { "enabled": false },
+    "imessage": { "enabled": false },
+    "irc": { "enabled": false },
+    "googlechat": { "enabled": false },
+    "msteams": { "enabled": false },
+    "matrix": { "enabled": false },
+    "feishu": { "enabled": false },
+    "line": { "enabled": false },
+    "mattermost": { "enabled": false },
+    "nostr": { "enabled": false },
+    "twitch": { "enabled": false }
+  },
+  "skills": {
+    "allowBundled": [
+      "web-search",
+      "healthcheck",
+      "model-usage"
+    ]
+  }
+}

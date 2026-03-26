@@ -82,6 +82,9 @@ apps/ios/*.dSYM.zip
 # provisioning profiles (local)
 apps/ios/*.mobileprovision
 
+# Firecrawl cache
+.firecrawl/
+
 # Local untracked files
 .local/
 docs/.local/
