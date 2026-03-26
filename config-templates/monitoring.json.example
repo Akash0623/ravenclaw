@@ -1,0 +1,32 @@
+{
+  "_comment": "Ravenclaw monitoring and cost control config",
+  "_comment2": "Copy to ~/.openclaw/monitoring.json and customize",
+
+  "cost_limits": {
+    "daily_max_usd": 5.00,
+    "monthly_max_usd": 50.00,
+    "alert_at_percent": 80,
+    "models": {
+      "claude-sonnet-4-20250514": {
+        "input_per_1k": 0.003,
+        "output_per_1k": 0.015
+      },
+      "deepseek/deepseek-chat": {
+        "input_per_1k": 0.00014,
+        "output_per_1k": 0.00028
+      }
+    }
+  },
+
+  "health_check": {
+    "interval_seconds": 300,
+    "gateway_url": "http://localhost:18789",
+    "alert_on_failure": true
+  },
+
+  "rate_limits": {
+    "messages_per_minute": 10,
+    "messages_per_hour": 100,
+    "tokens_per_day": 500000
+  }
+}

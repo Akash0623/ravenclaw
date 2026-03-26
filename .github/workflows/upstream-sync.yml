@@ -1,0 +1,55 @@
+name: Sync Upstream OpenClaw
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    name: Sync with upstream
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/openclaw/openclaw.git || true
+          git fetch upstream main
+
+      - name: Check for new commits
+        id: check
+        run: |
+          BEHIND=$(git rev-list --count HEAD..upstream/main)
+          echo "behind=$BEHIND" >> $GITHUB_OUTPUT
+          echo "Ravenclaw is $BEHIND commits behind upstream"
+
+      - name: Merge upstream
+        if: steps.check.outputs.behind != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git merge upstream/main --no-edit || true
+
+      - name: Create Pull Request
+        if: steps.check.outputs.behind != '0'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: upstream-sync
+          title: "chore: sync with upstream OpenClaw"
+          body: |
+            Automated sync with [openclaw/openclaw](https://github.com/openclaw/openclaw).
+
+            **Commits behind:** ${{ steps.check.outputs.behind }}
+
+            Review carefully — upstream changes may conflict with Ravenclaw customizations.
+          labels: upstream-sync
+          delete-branch: true
